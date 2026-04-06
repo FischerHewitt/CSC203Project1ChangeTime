@@ -7,7 +7,6 @@ public static void main(String[] args) {
     ArrayList<ArrayList<String>> calendar = new ArrayList<>()
     calendar.add()
 
-
 }
 
 public static void moveEventTime(ArrayList<ArrayList<String>> calendar,String newTime, String event ){
