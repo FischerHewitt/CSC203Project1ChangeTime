@@ -27,7 +27,8 @@ public static void main(String[] args) {
     calendar.get(2).add("CS class at 11:00am");
     calendar.get(3).add("Club meeting at 5:00pm");
     calendar.get(6).add("Go to the beach at 10:00am");
-    System.out.print(calendar);
+    System.out.println(calendar);
+    testCases(calendar);
 }
 
 public static void moveEventTime(ArrayList<ArrayList<String>> calendar,String newTime, String event ){
@@ -76,7 +77,7 @@ public static void moveEventTime(ArrayList<ArrayList<String>> calendar,String ne
 
 
 
-public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event ){
+public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int day_idx = 0;
     while (day_idx < 7){
         ArrayList<String> dayItems = calendar.get(day_idx);
@@ -105,4 +106,28 @@ public static boolean checkForConflict(ArrayList<String> day_events, String newT
         }
     }
     return false;
+}
+
+public static void testCases(ArrayList<ArrayList<String>> calendar){
+    Object[] test01 = getEventTime(calendar, "Math class");
+    System.out.print(Arrays.toString(test01));
+    System.out.println(", [true, 0, 0, Math class, 10:00am]");
+
+    Object[] test02 = getEventTime(calendar, "CS class");
+    System.out.print(Arrays.toString(test02));
+    System.out.println(", [true, 2, 1, CS class, 11:00am]");
+
+    Object[] test03 = getEventTime(calendar, "CS Class");
+    System.out.print(Arrays.toString(test03));
+    System.out.println(", [false, -1, -1, N, N]");
+
+    boolean test04 = checkForConflict(calendar.get(2), "9:00am");
+    String test04ans = String.valueOf(test04);
+    System.out.print(test04ans);
+    System.out.println(", true");
+
+    boolean test05 = checkForConflict(calendar.get(0), "9:00am");
+    String test05ans = String.valueOf(test05);
+    System.out.print(test05ans);
+    System.out.println(", false");
 }
