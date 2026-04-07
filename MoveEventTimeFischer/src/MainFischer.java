@@ -58,7 +58,7 @@ public static void moveEventTime(ArrayList<ArrayList<String>> calendar,String ne
                 } else if ((userInput.toLowerCase().equals("no"))) {
                     running = false;
                 } else {
-                    System.out.println("Invalid Argument");
+                    System.out.println("Invalid Argument.");
                 }
 
             } while (running);
@@ -130,4 +130,10 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
     String test05ans = String.valueOf(test05);
     System.out.print(test05ans);
     System.out.println(", false");
+
+    System.out.println("Test: 06");
+    moveEventTime(calendar, "9:00am", "Dance class");
+
+    System.out.println("\nTest: 07");
+    moveEventTime(calendar, "9:00am", "Dance Class");
 }
