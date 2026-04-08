@@ -86,6 +86,7 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
                 return new Object[]{true, dayIdx, eventIdx, eventArray[0], eventArray[1]};
             }
 
+
             eventIdx++;
         }
 
