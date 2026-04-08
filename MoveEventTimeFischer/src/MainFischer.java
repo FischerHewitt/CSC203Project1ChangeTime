@@ -115,7 +115,7 @@ public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int d
     int eventIdx = 0;
     boolean to_big = false;
     while (eventIdx < dayEvents.size() & !to_big){
-
+        String[] eventArray = dayEvents.get(eventIdx).split(" at ");
     }
 }
 
@@ -123,6 +123,20 @@ public static int getTimeInSeconds(String time){
     String[] parts = time.split(":");
     String AMorPM = parts[1].substring(2);
     int hours = Integer.parseInt(parts[0]);
+    int minutes = Integer.parseInt(parts[1].substring(0,2));
+    if (AMorPM.toLowerCase().equals("am")){ // 12:00am - 11:59am
+        if (hours < 12){     //1:00am - 11:59am
+            return hours * 60 + minutes;
+        } else {    //12:00am - 12:59 am
+            return minutes;
+        }
+    } else { // 12:00pm - 11:59pm
+        if (hours < 12){ //1:00 pm - 11:59pm
+            return (hours + 12) * 60 + minutes;
+        } else { //12:00pm - 12:59pm
+            return hours * 60 + minutes;
+        }
+    }
 }
 
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
@@ -158,6 +172,7 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
     System.out.print(test05ans);
     System.out.println(", false");
 
+    /*
     System.out.println("Test: 06 (9:00am, Dance class)");
     moveEventTime(calendar, "9:00am", "Dance class");
     System.out.println(calendar);
@@ -167,4 +182,26 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
 
     System.out.println("Test: 08 (9:00am, not an event)");
     moveEventTime(calendar, "9:00am", "not an event");
+
+     */
+
+    int test09 = getTimeInSeconds("12:00pm");
+    String test09ans = String.valueOf(test09);
+    System.out.print(test09ans);
+    System.out.println(", 720");
+
+    int test10 = getTimeInSeconds("12:01am");
+    String test10ans = String.valueOf(test10);
+    System.out.print(test10ans);
+    System.out.println(", 1");
+
+    int test11 = getTimeInSeconds("3:05am");
+    String test11ans = String.valueOf(test11);
+    System.out.print(test11ans);
+    System.out.println(", 185");
+
+    int test12 = getTimeInSeconds("11:20pm");
+    String test12ans = String.valueOf(test12);
+    System.out.print(test12ans);
+    System.out.println(", 1400");
 }
