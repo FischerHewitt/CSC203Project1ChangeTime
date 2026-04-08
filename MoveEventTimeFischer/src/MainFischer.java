@@ -70,9 +70,6 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar,String 
     }
 }
 
-
-
-
 public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
     while (dayIdx < 7){
@@ -92,6 +89,21 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
         dayIdx++;
     }
     return new Object[]{false, -1, -1, "N", "N"};
+}
+
+/* void deleteEvent( ArrayList<ArrayList<String> Calendar, String event )
+Removes the event from the calendar */
+public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
+    Object[] results = getEventTime(calendar, event);
+    boolean found = (boolean) results[0];
+    int dayIdx = (int) results[1];
+    int dateIdx = (int) results[2];
+    if(found) {
+        calendar.get(dayIdx).remove(dateIdx);
+        System.out.println("Event '" + event + "' removed");
+    } else {
+        System.out.println("Event not found. Couldn't delete.");
+    }
 }
 
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
@@ -136,4 +148,7 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
 
     System.out.println("Test: 08 (9:00am, not an event)");
     moveEventTime(calendar, "9:00am", "not an event");
+
+    System.out.println("Test: 09 (removing 'Go to the beach at 10:00am')");
+    delEv(calendar,"Go to the beach");
 }
