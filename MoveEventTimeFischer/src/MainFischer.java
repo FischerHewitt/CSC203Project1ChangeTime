@@ -29,11 +29,11 @@ public static void main(String[] args) {
 
 public static void moveEventTime(ArrayList< ArrayList<String> > calendar,String newTime, String event ){
     Object[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
-    boolean found = (boolean) found_dayIdx_eventIdx_eventName_oldTime [0];
-    int dayIdx = (int) found_dayIdx_eventIdx_eventName_oldTime [1];
-    int eventIdx = (int) found_dayIdx_eventIdx_eventName_oldTime [2];
-    String eventName = (String) found_dayIdx_eventIdx_eventName_oldTime [3];
-    String oldTime = (String) found_dayIdx_eventIdx_eventName_oldTime [4];
+    boolean found = (boolean) found_dayIdx_eventIdx_eventName_oldTime[0];
+    int dayIdx = (int) found_dayIdx_eventIdx_eventName_oldTime[1];
+    int eventIdx = (int) found_dayIdx_eventIdx_eventName_oldTime[2];
+    String eventName = (String) found_dayIdx_eventIdx_eventName_oldTime[3];
+    String oldTime = (String) found_dayIdx_eventIdx_eventName_oldTime[4];
     String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday",
             "Friday", "Saturday", "Sunday"};
 
@@ -62,7 +62,7 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar,String 
 
         if (!isAConflict) {
             //deleteEvent(calendar, event_name);
-            //addEvent(calendar, days_of_the_week[day_idx], event_name, newTime);
+            addMovedEvent(calendar, dayIdx, eventName, newTime);
             System.out.println("Event Has Been Changed");
         } else {
             System.out.println("No events have been edited");
@@ -92,6 +92,10 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
         dayIdx++;
     }
     return new Object[]{false, -1, -1, "N", "N"};
+}
+
+public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
+
 }
 
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
