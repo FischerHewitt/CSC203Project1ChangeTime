@@ -119,6 +119,12 @@ public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int d
     }
 }
 
+public static int getTimeInSeconds(String time){
+    String[] parts = time.split(":");
+    String AMorPM = parts[1].substring(2);
+    int hours = Integer.parseInt(parts[0]);
+}
+
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
     for (int idx = 0; idx < dayEvents.size(); idx++){
         String[] event_array = dayEvents.get(idx).split(" at ");
