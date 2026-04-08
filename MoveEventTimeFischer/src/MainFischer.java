@@ -131,12 +131,13 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
     System.out.print(test05ans);
     System.out.println(", false");
 
-    System.out.println("Test: 06");
+    System.out.println("Test: 06 (9:00am, Dance class)");
+    moveEventTime(calendar, "9:00am", "Dance class");
+    System.out.println(calendar);
+
+    System.out.println("Test: 07 (9:00am, Dance class)");
     moveEventTime(calendar, "9:00am", "Dance class");
 
-    System.out.println("Test: 07");
-    moveEventTime(calendar, "9:00am", "Dance class");
-
-    System.out.println("\nTest: 08");
-    moveEventTime(calendar, "9:00am", "Dance Class");
+    System.out.println("Test: 08 (9:00am, not an event)");
+    moveEventTime(calendar, "9:00am", "not an event");
 }
