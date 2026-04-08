@@ -14,13 +14,9 @@ import java.util.ArrayList;
 
 public static void main(String[] args) {
     ArrayList< ArrayList<String> > calendar = new ArrayList<>();
-    calendar.add(0, new ArrayList<>());
-    calendar.add(1, new ArrayList<>());
-    calendar.add(2, new ArrayList<>());
-    calendar.add(3, new ArrayList<>());
-    calendar.add(4, new ArrayList<>());
-    calendar.add(5, new ArrayList<>());
-    calendar.add(6, new ArrayList<>());
+    for(int i = 0; i < 7; i++) {
+        calendar.add(new ArrayList<>());
+    }
     calendar.get(0).add("Math class at 10:00am");
     calendar.get(0).add("Gym at 2:00pm");
     calendar.get(2).add("Dance class at 9:00am");
