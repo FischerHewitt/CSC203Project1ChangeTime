@@ -27,7 +27,7 @@ public static void main(String[] args) {
     testCases(calendar);
 }
 
-public static void moveEventTime(ArrayList< ArrayList<String> > calendar,String newTime, String event ){
+public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
     Object[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
     boolean found = (boolean) found_dayIdx_eventIdx_eventName_oldTime[0];
     int dayIdx = (int) found_dayIdx_eventIdx_eventName_oldTime[1];
@@ -61,7 +61,7 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar,String 
         }
 
         if (!isAConflict) {
-            //deleteEvent(calendar, event_name);
+            delEv(calendar, eventName);
             addMovedEvent(calendar, dayIdx, eventName, newTime);
             System.out.println("Event Has Been Changed");
         } else {
@@ -104,22 +104,31 @@ public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
     int dateIdx = (int) results[2];
     if(found) {
         calendar.get(dayIdx).remove(dateIdx);
-        System.out.println("Event '" + event + "' removed");
-    } else {
+        // dont need System.out.println("Event '" + event + "' removed");
+    } /* else {
         System.out.println("Event not found. Couldn't delete.");
-    }
+    } we should not need these either*/
 }
 
 public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
-    ArrayList <String> dayEvents = calendar.get(dayIdx);
-    int eventIdx = 0;
-    boolean to_big = false;
+    ArrayList <String> dayEvents = calendar.get(dayIdx); //Gets the days of the events
+    int eventIdx = 0; // each invent in the day idx
+    int newTimeMinutes = getTimeInMinutes(newTime); // Time the event is going to be changed
+    boolean to_big = false; // becomes true when our newTime becomes greater than the time of the event we are currently looking at
     while (eventIdx < dayEvents.size() & !to_big){
-        String[] eventArray = dayEvents.get(eventIdx).split(" at ");
+        String[] eventArray = dayEvents.get(eventIdx).split(" at "); //current event
+        int currentEventMintues = getTimeInMinutes(eventArray[1]);
+        if (currentEventMintues > newTimeMinutes){
+            to_big = true;
+        } else {
+            eventIdx++;
+        }
+
     }
+    calendar.get(dayIdx).add(eventIdx, eventName + " at " + newTime);
 }
 
-public static int getTimeInSeconds(String time){
+public static int getTimeInMinutes(String time){
     String[] parts = time.split(":");
     String AMorPM = parts[1].substring(2);
     int hours = Integer.parseInt(parts[0]);
@@ -171,36 +180,37 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
     String test05ans = String.valueOf(test05);
     System.out.print(test05ans);
     System.out.println(", false");
+    System.out.println();
 
-    /*
-    System.out.println("Test: 06 (9:00am, Dance class)");
-    moveEventTime(calendar, "9:00am", "Dance class");
+    System.out.println(calendar);
+    System.out.println("Test: 06 (10:00am, Dance class)");
+    moveEventTime(calendar, "10:00am", "Dance class");
     System.out.println(calendar);
 
-    System.out.println("Test: 07 (9:00am, Dance class)");
-    moveEventTime(calendar, "9:00am", "Dance class");
+    System.out.println("Test: 07 (2:00pm, Math class)");
+    moveEventTime(calendar, "2:00pm", "Math class");
+    System.out.println(calendar);
 
     System.out.println("Test: 08 (9:00am, not an event)");
     moveEventTime(calendar, "9:00am", "not an event");
+    System.out.println(calendar);
 
-     */
-
-    int test09 = getTimeInSeconds("12:00pm");
+    int test09 = getTimeInMinutes("12:00pm");
     String test09ans = String.valueOf(test09);
     System.out.print(test09ans);
     System.out.println(", 720");
 
-    int test10 = getTimeInSeconds("12:01am");
+    int test10 = getTimeInMinutes("12:01am");
     String test10ans = String.valueOf(test10);
     System.out.print(test10ans);
     System.out.println(", 1");
 
-    int test11 = getTimeInSeconds("3:05am");
+    int test11 = getTimeInMinutes("3:05am");
     String test11ans = String.valueOf(test11);
     System.out.print(test11ans);
     System.out.println(", 185");
 
-    int test12 = getTimeInSeconds("11:20pm");
+    int test12 = getTimeInMinutes("11:20pm");
     String test12ans = String.valueOf(test12);
     System.out.print(test12ans);
     System.out.println(", 1400");
