@@ -94,8 +94,28 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
     return new Object[]{false, -1, -1, "N", "N"};
 }
 
-public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
+/* void deleteEvent( ArrayList<ArrayList<String> Calendar, String event )
+Removes the event from the calendar */
+public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
+    Object[] results = getEventTime(calendar, event);
+    boolean found = (boolean) results[0];
+    int dayIdx = (int) results[1];
+    int dateIdx = (int) results[2];
+    if(found) {
+        calendar.get(dayIdx).remove(dateIdx);
+        System.out.println("Event '" + event + "' removed");
+    } else {
+        System.out.println("Event not found. Couldn't delete.");
+    }
+}
 
+public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
+    ArrayList <String> dayEvents = calendar.get(dayIdx);
+    int eventIdx = 0;
+    boolean to_big = false;
+    while (eventIdx < dayEvents.size() & !to_big){
+
+    }
 }
 
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
