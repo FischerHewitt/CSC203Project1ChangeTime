@@ -11,8 +11,8 @@
 //]
 import java.util.ArrayList;
 
-
-public static void main(String[] args) {
+// Main function that assembles calendar and runs the test cases
+void main() {
     ArrayList< ArrayList<String> > calendar = new ArrayList<>();
     for(int i = 0; i < 7; i++) {
         calendar.add(new ArrayList<>());
@@ -27,12 +27,12 @@ public static void main(String[] args) {
     testCases(calendar);
 }
 
+// Moves an event from one time to another within a day
 public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
     String[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
     boolean found = Boolean.parseBoolean(found_dayIdx_eventIdx_eventName_oldTime[0]);
     int dayIdx = Integer.parseInt(found_dayIdx_eventIdx_eventName_oldTime[1]);
     String eventName = found_dayIdx_eventIdx_eventName_oldTime[3];
-
 
     if (!found){
         System.out.println("Event not found");
@@ -65,11 +65,9 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String
             System.out.println("No events have been edited");
         }
     }
-
-
-
 }
 
+// Gets information about an event including its current time and index in the 2D calendar ArrayList
 public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
     while (dayIdx < 7){
@@ -92,13 +90,12 @@ public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
     return new String[]{"false", "-1", "-1", "N", "N"};
 }
 
-/* void deleteEvent( ArrayList<ArrayList<String> Calendar, String event )
-Removes the event from the calendar */
+// Removes an event from the calendar
 public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
-    Object[] results = getEventTime(calendar, event);
-    boolean found = (boolean) results[0];
-    int dayIdx = (int) results[1];
-    int dateIdx = (int) results[2];
+    String[] results = getEventTime(calendar, event);
+    boolean found = Boolean.parseBoolean(results[0]);
+    int dayIdx = Integer.parseInt(results[1]);
+    int dateIdx = Integer.parseInt(results[2]);
     if(found) {
         calendar.get(dayIdx).remove(dateIdx);
         // dont need System.out.println("Event '" + event + "' removed");
@@ -107,6 +104,7 @@ public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
     } we should not need these either*/
 }
 
+// Adds an event to the calendar respecting the time of day of other events
 public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
     ArrayList <String> dayEvents = calendar.get(dayIdx); //Gets the days of the events
     int eventIdx = 0; // each invent in the day idx
@@ -120,11 +118,11 @@ public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int d
         } else {
             eventIdx++;
         }
-
     }
     calendar.get(dayIdx).add(eventIdx, eventName + " at " + newTime);
 }
 
+// Gets the number of minutes at a specific time. Ex: 1:49pm = (13*60) + 49 = 829 minutes
 public static int getTimeInMinutes(String time){
     String[] parts = time.split(":");
     String AMorPM = parts[1].substring(2);
@@ -145,6 +143,7 @@ public static int getTimeInMinutes(String time){
     }
 }
 
+// Checks and returns true/false if there is another event happening at a given time
 public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
     for (int idx = 0; idx < dayEvents.size(); idx++){
         String[] event_array = dayEvents.get(idx).split(" at ");
@@ -155,6 +154,7 @@ public static boolean checkForConflict(ArrayList<String> dayEvents, String newTi
     return false;
 }
 
+// Test cases to ensure proper functioning of all the functions.
 public static void testCases(ArrayList<ArrayList<String>> calendar){
     Object[] test01 = getEventTime(calendar, "Math class");
     System.out.print(Arrays.toString(test01));
@@ -212,4 +212,8 @@ public static void testCases(ArrayList<ArrayList<String>> calendar){
     System.out.print(test12ans);
     System.out.println(", 1400");
 
+    int test13 = getTimeInMinutes("1:49pm");
+    String test13ans = String.valueOf(test13);
+    System.out.print(test13ans);
+    System.out.println(", 829");
 }
