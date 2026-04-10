@@ -68,10 +68,10 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String
             System.out.println("No events have been edited");
         }
     }
+
+
+
 }
-
-
-
 
 public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
