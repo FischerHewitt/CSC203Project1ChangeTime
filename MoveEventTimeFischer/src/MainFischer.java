@@ -71,7 +71,7 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String
 
 }
 
-public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
+public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
     while (dayIdx < 7){
         ArrayList<String> dayItems = calendar.get(dayIdx);
