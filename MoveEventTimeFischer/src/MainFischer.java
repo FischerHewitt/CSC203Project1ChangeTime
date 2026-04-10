@@ -80,8 +80,7 @@ public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
             String[] eventArray = dayItems.get(eventIdx).split(" at ");
 
             if (eventArray[0].equals(event)) {
-                return new String[]{"true", dayIdx, eventIdx, eventArray[0], eventArray[1]};
-
+                return new String[]{"true", String.valueOf(dayIdx), String.valueOf(eventIdx), eventArray[0], eventArray[1]};
             }
 
 
@@ -90,7 +89,7 @@ public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
 
         dayIdx++;
     }
-    return new String[]{"false", -1, -1, "N", "N"};
+    return new String[]{"false", "-1", "-1", "N", "N"};
 }
 
 /* void deleteEvent( ArrayList<ArrayList<String> Calendar, String event )
