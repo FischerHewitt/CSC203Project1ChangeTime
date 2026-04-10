@@ -98,10 +98,8 @@ public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
     int dateIdx = Integer.parseInt(results[2]);
     if(found) {
         calendar.get(dayIdx).remove(dateIdx);
-        // dont need System.out.println("Event '" + event + "' removed");
-    } /* else {
-        System.out.println("Event not found. Couldn't delete.");
-    } we should not need these either*/
+    }
+
 }
 
 // Adds an event to the calendar respecting the time of day of other events
