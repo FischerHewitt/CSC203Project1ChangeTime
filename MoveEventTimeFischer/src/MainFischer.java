@@ -28,14 +28,11 @@ public static void main(String[] args) {
 }
 
 public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
-    Object[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
-    boolean found = (boolean) found_dayIdx_eventIdx_eventName_oldTime[0];
-    int dayIdx = (int) found_dayIdx_eventIdx_eventName_oldTime[1];
-    int eventIdx = (int) found_dayIdx_eventIdx_eventName_oldTime[2];
-    String eventName = (String) found_dayIdx_eventIdx_eventName_oldTime[3];
-    String oldTime = (String) found_dayIdx_eventIdx_eventName_oldTime[4];
-    String[] daysOfTheWeek = {"Monday", "Tuesday", "Wednesday", "Thursday",
-            "Friday", "Saturday", "Sunday"};
+    String[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
+    boolean found = Boolean.parseBoolean(found_dayIdx_eventIdx_eventName_oldTime[0]);
+    int dayIdx = Integer.parseInt(found_dayIdx_eventIdx_eventName_oldTime[1]);
+    String eventName = found_dayIdx_eventIdx_eventName_oldTime[3];
+
 
     if (!found){
         System.out.println("Event not found");
@@ -73,7 +70,7 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String
 
 }
 
-public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
+public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
     while (dayIdx < 7){
         ArrayList<String> dayItems = calendar.get(dayIdx);
@@ -83,7 +80,8 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
             String[] eventArray = dayItems.get(eventIdx).split(" at ");
 
             if (eventArray[0].equals(event)) {
-                return new Object[]{true, dayIdx, eventIdx, eventArray[0], eventArray[1]};
+                return new String[]{"true", dayIdx, eventIdx, eventArray[0], eventArray[1]};
+
             }
 
 
@@ -92,7 +90,7 @@ public static Object[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
 
         dayIdx++;
     }
-    return new Object[]{false, -1, -1, "N", "N"};
+    return new String[]{"false", -1, -1, "N", "N"};
 }
 
 /* void deleteEvent( ArrayList<ArrayList<String> Calendar, String event )
