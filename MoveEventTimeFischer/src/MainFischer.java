@@ -146,6 +146,78 @@ static int stringParser(String input) {//returns an index 0-6 of the day from th
     return -1;
 }
 
+/**
+ * deletes an event from the weekly calendar based on matching the first word of the event string.
+ *
+ * this method searches through all days in the calendar and compares the first word
+ * (before the first space) of each event against the userInputEvent parameter.
+ * When a match is found, the entire event is removed from that day.
+ *
+ * intended implementation:
+ * - iterates through each day of the week
+ * - for each event in the day, extracts the event by splitting at the " at "
+ * - Compares that evnet with the userInputEvent parameter
+ * - If a match is found, removes the event and sets removedFlag to true
+ * - After searching all days, if any event was removed, prints the updated calendar
+ *
+ * example usage:
+ *   deleteEvent(myCalendar, "Math")  // this wiill delete "Math class at 10:00am" event
+ * oh and time complexity is O(n^n))
+ */
+static void deleteEvent(ArrayList<ArrayList<String>> weeklyCalendar, String userInputEvent){
+    if (weeklyCalendar == null){
+        System.err.println("no calendar, please check your calendar.");
+
+    } else {
+        boolean removedFlag = false;
+
+        for (ArrayList<String> dayOfWeek : weeklyCalendar ) {
+            if (dayOfWeek == null){
+                System.err.println("dayOfweek does not exist, please check your calender.");
+
+            } else {
+                int weekSize = dayOfWeek.size();
+
+                for (int i = 0; i < weekSize; i++){
+                    String extractedEventString = dayOfWeek.get(0);
+                    //can be "" or null
+                    if (extractedEventString.equals("") || extractedEventString == null){
+                        //skips over the rest of loop and continues iteration
+                        continue;
+
+                    }
+
+                    ArrayList<String> newEventsInDay = new ArrayList <>();
+
+                    for (String event: dayOfWeek){
+                        /* docs: https://docs.oracle.com/javase/tutorial/java/data/manipstrings.html
+                         *Returns the index of the first (for atIndex) and last (for atLastIndex) occurrence of the specified substring
+                         */
+                        int splitAt = event.lastIndexOf(" at ");
+                        String eventName = event.substring(0, splitAt);
+                        String eventRest = event.substring(splitAt);
+
+                        if (eventName.toLowerCase().equals(userInputEvent.toLowerCase())){
+                            removedFlag = true;
+
+                        } else {
+                            newEventsInDay.add(eventName + eventRest);
+
+                        }
+                    }
+                }
+            }
+        }
+
+        if (removedFlag){
+            System.out.println("Event Deleted, here is your new calendar!");
+            printCalendar(weeklyCalendar);
+        } else {
+            System.err.println("No events found! please check your input and try again.");
+        }
+    }
+}
+
 //moves the inputted event if found to a new day
 void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, String documentationDay, String event) {
     int sDidx = findIndex(sourceDay.toLowerCase());
