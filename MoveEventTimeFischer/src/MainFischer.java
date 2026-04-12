@@ -27,6 +27,27 @@ void main() {
     testCases(calendar);
 }
 
+/*
+           Prints events with day and time for each day of the week
+           Input: Calendar, Day, Time
+           Result: a weekly calendar
+           Returns: Printed weekly calendar
+           */
+static void printCalendar (ArrayList<ArrayList<String>> calendar) {
+    System.out.println("Great! Here is your current calendar for this week.\n");
+    for (int i = 0; i < calendar.size(); i++) {
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        ArrayList<String> day = calendar.get(i);
+        System.out.println(days[i] + ":");
+        if (day.isEmpty()) {
+            System.out.println("\tNo events");
+        }
+        for (String event : day) {
+            System.out.println("\t" + event); // Prints event
+        }
+    }
+}
+
 static void printDay(ArrayList<ArrayList<String>>calendar, String day) {
     // Initialize a list of Days
     String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
