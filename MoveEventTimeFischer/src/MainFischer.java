@@ -27,12 +27,41 @@ void main() {
     testCases(calendar);
 }
 
+// finds the index of the day of the week inputted Monday being 0, Sunday being 6
+public int findIndex (String day) {
+    String[] calendarDays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+    int idx;
+    for (idx = 0; idx < calendarDays.length; idx++) {
+        if (day.equals(calendarDays[idx])){
+            break;
+        }
+    }
+    System.out.println(idx);
+    return idx;
+}
+
+//moves the inputted event if found to a new day
+void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, String documentationDay, String event) {
+    int sDidx = findIndex(sourceDay.toLowerCase());
+    int eventLength = event.length();
+    for (int i = 0; i < calendar.get(sDidx).size(); i++) { //iterates through the inputted source day
+        if (calendar.get(sDidx).get(i).substring(0, eventLength).equals(event)) { //makes the string in the calendar the length of even then checks if it matches
+            String time = calendar.get(sDidx).get(i).substring((eventLength + 4)); // finds the time that will be used in the addEvent()
+            // vvvvvvv SUPER IMPORTANT NOTE: for regular addEvent, use documentationDay INSTEAD of findIndex(documentationDay) !!!!!!!
+            addMovedEvent(calendar, findIndex(documentationDay), event, time);
+            // ^^^^^^^ SUPER IMPORTANT NOTE: for regular addEvent, use documentationDay INSTEAD of findIndex(documentationDay) !!!!!!!
+            calendar.get(sDidx).remove(i); //removes the event on the original day
+            break; // ends the for loop
+        }
+    }
+}
+
 /*
-           Prints events with day and time for each day of the week
-           Input: Calendar, Day, Time
-           Result: a weekly calendar
-           Returns: Printed weekly calendar
-           */
+    Prints events with day and time for each day of the week
+    Input: Calendar, Day, Time
+    Result: a weekly calendar
+    Returns: Printed weekly calendar
+*/
 static void printCalendar (ArrayList<ArrayList<String>> calendar) {
     System.out.println("Great! Here is your current calendar for this week.\n");
     for (int i = 0; i < calendar.size(); i++) {
