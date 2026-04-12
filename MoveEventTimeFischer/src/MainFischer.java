@@ -27,6 +27,36 @@ void main() {
     testCases(calendar);
 }
 
+static void printDay(ArrayList<ArrayList<String>>calendar, String day) {
+    // Initialize a list of Days
+    String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    int dayIndex = -1;
+    // Checks list of Days to retrieve the index for a given day
+    for (int i = 0; i < days.length; i++) {
+        if (days[i].equals(day)) {
+            dayIndex = i;
+            break;
+        }
+    }
+    // If an index isn't found then an error message is printed
+    if (dayIndex == -1) {
+        System.out.println("I'm afraid I don't have that day. Try again.");
+        return;
+    }
+    // Retrieves all events within the given day
+    ArrayList<String> events = calendar.get(dayIndex);
+    // If there are no events, then a message is printed
+    if (events.isEmpty()) {
+        System.out.println("You don't have any events on" + day + ".");
+        return;
+    }
+    // Else, print out the day and its events
+    System.out.println(day + ":");
+    for (String event : events) {
+        System.out.println("\t" + event);
+    }
+}
+
 // Moves an event from one time to another within a day
 public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
     String[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
