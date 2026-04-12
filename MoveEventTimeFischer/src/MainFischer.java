@@ -11,8 +11,20 @@
 //]
 import java.util.ArrayList;
 
+static String[] dayNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+
+static int stringParser(String input) {//returns an index 0-6 of the day from the input string
+    for (int i = 0; i < dayNames.length; i++) {
+        if (input.equalsIgnoreCase(dayNames[i])) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // Main function that assembles calendar and runs the test cases
 void main() {
+    /*
     ArrayList< ArrayList<String> > calendar = new ArrayList<>();
     for(int i = 0; i < 7; i++) {
         calendar.add(new ArrayList<>());
@@ -22,9 +34,103 @@ void main() {
     calendar.get(2).add("Dance class at 9:00am");
     calendar.get(2).add("CS class at 11:00am");
     calendar.get(3).add("Club meeting at 5:00pm");
-    calendar.get(6).add("Go to the beach at 10:00am");
-    System.out.println(calendar);
-    testCases(calendar);
+    calendar.get(6).add("Go to the beach at 10:00am");*/
+
+    //Creating a Calendar
+    ArrayList<ArrayList<String>> weeklyCalendar = new ArrayList<>();
+    //Creating a Scanner to take in input values
+    Scanner scanner = new Scanner(System.in);
+    String input;
+    boolean running = true;
+    boolean printStatement = false;
+    ArrayList<String> Sunday = new ArrayList<>();
+    ArrayList<String> Monday = new ArrayList<>();
+    ArrayList<String> Tuesday = new ArrayList<>();
+    ArrayList<String> Wednesday = new ArrayList<>();
+    ArrayList<String> Thursday = new ArrayList<>();
+    ArrayList<String> Friday = new ArrayList<>();
+    ArrayList<String> Saturday = new ArrayList<>();
+    weeklyCalendar.add(Sunday);
+    weeklyCalendar.add(Monday);
+    weeklyCalendar.add(Tuesday);
+    weeklyCalendar.add(Wednesday);
+    weeklyCalendar.add(Thursday);
+    weeklyCalendar.add(Friday);
+    weeklyCalendar.add(Saturday);
+    System.out.println("Welcome to the weekly calendar. Pick an option from below by typing its number or type “exit” to terminate the program.\n" +
+            "1.\tAdd an event to the calendar\n" +
+            "2.\tRemove an event to the calendar\n" +
+            "3.\tMove an event from one day to another\n" +
+            "4.\tMove an event to a different time\n" +
+            "5.\tPrint a day\n" +
+            "6.\tPrint the calendar\n");
+    while (running) {
+        if (printStatement) {
+            System.out.println("Would you like to continue with something else? Pick an option from below by typing its number or type exit to terminate the program.\n" +
+                    "1.\tAdd an event to the calendar\n" +
+                    "2.\tRemove an event to the calendar\n" +
+                    "3.\tMove an event from one day to another\n" +
+                    "4.\tMove an event to a different time\n" +
+                    "5.\tPrint a day\n" +
+                    "6.\tPrint the calendar\n");
+        }
+        printStatement = true;
+        input = scanner.nextLine();
+        //option validation
+        if (input.equalsIgnoreCase("exit")) {
+            running = false;
+            System.out.println("It was nice to see you! Have a great day.");
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("1")) {
+            System.out.println("Great, you want to add an event. What is the day for the event?\n" +
+                    "You can type Monday, Tuesday, etc.");
+            input = scanner.nextLine();
+            //day validation
+            int index = stringParser(input);
+            while (index < 0) {
+                System.out.println("I’m afraid I don’t have a day " + input + ". Try typing again the day.");
+                input = scanner.nextLine();
+                index = stringParser(input);
+            }
+            System.out.println("What is the event you want to add on " + dayNames[index] + "?");
+            String eventName = scanner.nextLine();
+            System.out.println("What time would the event start? You can type 10:00am, 01:00pm, etc.");
+            String eventTime = scanner.nextLine();
+            //time validation
+            addMovedEvent(weeklyCalendar, index, eventName, eventTime);
+            System.out.println("Done. " + eventName + " at " + eventTime +" on "+dayNames[index] + " is added on your calendar.");
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("2")) {
+//                   weeklyCalendar.removeEvent();
+            System.out.println("Calling deleteEvent");
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("3")) {
+//                   weeklyCalendar.moveEventDay();
+            System.out.println("Calling moveEventDay");
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("4")) {
+//                   weeklyCalendar.moveEventTime();
+            System.out.println("Calling moveEventTime");
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("5")) {
+            System.out.println("Great! Which day do you want to print? You can type Monday, Tuesday, etc.");
+            input = scanner.nextLine();
+            int index = stringParser(input);
+            while (index < 0) {
+                System.out.println("I’m afraid I don’t have a day " + input + ". Try typing again the day.");
+                input = scanner.nextLine();
+                index = stringParser(input);
+            }
+            printDay(weeklyCalendar, dayNames[index]);
+//---------------------------------------------------------------------------------------------------------------------
+        } else if (input.equals("6")) {
+            printCalendar(weeklyCalendar);
+//---------------------------------------------------------------------------------------------------------------------
+        } else {
+            System.out.println("I’m afraid I don’t have this option. Try typing your option again.");
+            printStatement = false;
+        }
+    }
 }
 
 // finds the index of the day of the week inputted Monday being 0, Sunday being 6
