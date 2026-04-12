@@ -125,7 +125,7 @@ void main() {
 }
 
 // finds the index of the day of the week inputted Monday being 0, Sunday being 6
-public int findIndex (String day) {
+static int findIndex (String day) {
     String[] calendarDays = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
     int idx;
     for (idx = 0; idx < calendarDays.length; idx++) {
@@ -218,8 +218,109 @@ static void deleteEvent(ArrayList<ArrayList<String>> weeklyCalendar, String user
     }
 }
 
+/**
+ Based on input on day of week, it returns the index integer where its corresponding list of events are located
+ Input: String Weekday
+ Result: Returns integer which can be used to locate index of array list corresponding to weekday
+ Returns: integer
+ */
+static int checksEventIndex(String dayOfWeek) {
+    // Gets given day of the week's associated index
+    return DayOfWeek.valueOf(dayOfWeek.toUpperCase()).ordinal();
+}
+
+
+/**
+ Method checks if there is already a duplicate event by iterating through specified day
+ of the week and comparing the full string. If false, then it is later used in method addEvent
+ to add the event
+ */
+static boolean notHasDuplicate(ArrayList<ArrayList<String>> weeklyCalendar, String dayOfWeek, String eventNew) {
+    int indexDay = checksEventIndex(dayOfWeek); // index based on day of week
+    ArrayList<String> indexDaySchedule = weeklyCalendar.get(indexDay); //opens arraylist of the day of the week needed to iterate through
+
+    for (String eventDay : indexDaySchedule) {
+        if (eventDay.equals(eventNew)) {
+            System.out.println("Event already exists in calendar");
+            return false;
+        }
+    }
+    return true;
+}
+
+
+/**
+ Input: A string of time "10:54pm"
+ Result: Converts standard time to military time as an integer to later compare which event time is greater
+ Returns: Integer from 0 -> 2400
+ */
+static int conversionTime(String timeString) {
+    String ampm = timeString.substring(timeString.length() - 2);
+    String timeWithoutAMPM = timeString.substring(0, timeString.length() - 2);
+    int colonIndex = timeWithoutAMPM.indexOf(":");
+    int hourTime = Integer.parseInt(timeWithoutAMPM.substring(0, colonIndex)); // 10
+    int minuteTime = Integer.parseInt(timeWithoutAMPM.substring(colonIndex + 1)); //54
+    if (ampm.contains("am")) {
+        if (hourTime == 12) {
+            hourTime = 0; // Midnight Time ex 12:06am -> 12 -> 0
+        }
+    } else {
+        if (hourTime != 12) { // deals with the 12:06pm
+            hourTime += 12; // ex 5:06pm -> 17:06
+        }
+    }
+    return hourTime * 100 + minuteTime; // 10 * 100 + 54 = 1056 (10:56am)
+}
+
+
+/**
+ Compares time so comparison can be used to place new event in the correct order
+ Input: New event Time, Event Time Already in List
+ Result: Compare if new event should come before or after an event
+ Returns: Boolean
+ */
+static boolean compareTimeWhichGreater(int timeInt1, int timeInt2) {
+    return timeInt1 > timeInt2;
+}
+
+
+/**
+ Adds event to a specific day of the week and time in ascending order
+ Input: day, time, event
+ Result: The event is added to the calendar on the day and time specified
+ Returns: None, just alters the WeeklyCalendar
+ */
+static void addEvent(ArrayList<ArrayList<String>> weeklyCalendar, String dayOfWeek, String eventName, String timeOfEvent) {
+    String newEvent = eventName + " at " + timeOfEvent; // "Math class at 10:00am"
+    // If there is no duplicate event in weekday, then continue to add event
+    if (notHasDuplicate(weeklyCalendar, dayOfWeek, newEvent)) {
+        int dayToInsertNewEvent = checksEventIndex(dayOfWeek); // gets the index of wanted day of week to later open
+        ArrayList<String> eventListOfWeekday = weeklyCalendar.get(dayToInsertNewEvent); // Opens list of desired day of week
+        int newTimeOfEventToInteger = conversionTime(timeOfEvent); //10:00 am -> 1000
+
+
+        // Loops through events in ArrayList on specific Weekday
+        for (int i = 0; i < eventListOfWeekday.size(); i += 1) {
+            String eventInList = eventListOfWeekday.get(i);
+
+
+            int indexToGetToTime = eventInList.indexOf(" at ");
+            // Gets the time whether it is 4:00pm or 10:00am
+            String eventDayTime = eventInList.substring(indexToGetToTime + 4);
+
+            int convertCurrentEventTimeToInt = conversionTime(eventDayTime);
+            // if new event is earlier than the current event, then insert the event there
+            if (!compareTimeWhichGreater(newTimeOfEventToInteger, convertCurrentEventTimeToInt)) {
+                eventListOfWeekday.add(i, newEvent);
+                return; // breaks because event added, no need to continue looping through      (return?)
+            }
+        }
+        eventListOfWeekday.add(newEvent);
+    }
+}
+
 //moves the inputted event if found to a new day
-void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, String documentationDay, String event) {
+static void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, String documentationDay, String event) {
     int sDidx = findIndex(sourceDay.toLowerCase());
     int eventLength = event.length();
     for (int i = 0; i < calendar.get(sDidx).size(); i++) { //iterates through the inputted source day
@@ -332,7 +433,7 @@ static void printDay(ArrayList<ArrayList<String>>calendar, String day) {
 }
 
 // Moves an event from one time to another within a day
-public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
+static void moveEventTime(ArrayList< ArrayList<String> > calendar, String newTime, String event ){
     String[] found_dayIdx_eventIdx_eventName_oldTime = getEventTime(calendar, event);
     boolean found = Boolean.parseBoolean(found_dayIdx_eventIdx_eventName_oldTime[0]);
     int dayIdx = Integer.parseInt(found_dayIdx_eventIdx_eventName_oldTime[1]);
@@ -372,7 +473,7 @@ public static void moveEventTime(ArrayList< ArrayList<String> > calendar, String
 }
 
 // Gets information about an event including its current time and index in the 2D calendar ArrayList
-public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
+static String[] getEventTime(ArrayList<ArrayList<String>> calendar, String event){
     int dayIdx = 0;
     while (dayIdx < 7){
         ArrayList<String> dayItems = calendar.get(dayIdx);
@@ -395,7 +496,7 @@ public static String[] getEventTime(ArrayList<ArrayList<String>> calendar, Strin
 }
 
 // Removes an event from the calendar
-public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
+static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
     String[] results = getEventTime(calendar, event);
     boolean found = Boolean.parseBoolean(results[0]);
     int dayIdx = Integer.parseInt(results[1]);
@@ -407,7 +508,7 @@ public static void delEv(ArrayList<ArrayList<String>> calendar, String event) {
 }
 
 // Adds an event to the calendar respecting the time of day of other events
-public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
+static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int dayIdx, String eventName, String newTime){
     ArrayList <String> dayEvents = calendar.get(dayIdx); //Gets the days of the events
     int eventIdx = 0; // each invent in the day idx
     int newTimeMinutes = getTimeInMinutes(newTime); // Time the event is going to be changed
@@ -425,7 +526,7 @@ public static void addMovedEvent(ArrayList< ArrayList <String> > calendar, int d
 }
 
 // Gets the number of minutes at a specific time. Ex: 1:49pm = (13*60) + 49 = 829 minutes
-public static int getTimeInMinutes(String time){
+static int getTimeInMinutes(String time){
     String[] parts = time.split(":");
     String AMorPM = parts[1].substring(2);
     int hours = Integer.parseInt(parts[0]);
@@ -446,7 +547,7 @@ public static int getTimeInMinutes(String time){
 }
 
 // Checks and returns true/false if there is another event happening at a given time
-public static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
+static boolean checkForConflict(ArrayList<String> dayEvents, String newTime){
     for (int idx = 0; idx < dayEvents.size(); idx++){
         String[] event_array = dayEvents.get(idx).split(" at ");
         if (event_array[1].equals(newTime)){
@@ -457,7 +558,7 @@ public static boolean checkForConflict(ArrayList<String> dayEvents, String newTi
 }
 
 // Test cases to ensure proper functioning of all the functions.
-public static void testCases(ArrayList<ArrayList<String>> calendar){
+static void testCases(ArrayList<ArrayList<String>> calendar){
     Object[] test01 = getEventTime(calendar, "Math class");
     System.out.print(Arrays.toString(test01));
     System.out.println(", [true, 0, 0, Math class, 10:00am]");
