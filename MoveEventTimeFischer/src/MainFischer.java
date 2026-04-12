@@ -48,6 +48,14 @@ void main() {
     weeklyCalendar.add(Thursday);
     weeklyCalendar.add(Friday);
     weeklyCalendar.add(Saturday);
+
+    weeklyCalendar.get(0).add("Math class at 10:00am");
+    weeklyCalendar.get(0).add("Gym at 2:00pm");
+    weeklyCalendar.get(2).add("Dance class at 9:00am");
+    weeklyCalendar.get(2).add("CS class at 11:00am");
+    weeklyCalendar.get(3).add("Club meeting at 5:00pm");
+    weeklyCalendar.get(6).add("Go to the beach at 10:00am");
+
     System.out.println("Welcome to the weekly calendar. Pick an option from below by typing its number or type “exit” to terminate the program.\n" +
             "1.\tAdd an event to the calendar\n" +
             "2.\tRemove an event to the calendar\n" +
@@ -88,16 +96,41 @@ void main() {
             System.out.println("What time would the event start? You can type 10:00am, 01:00pm, etc.");
             String eventTime = scanner.nextLine();
             //time validation
-            addMovedEvent(weeklyCalendar, index, eventName, eventTime);
+            addEvent(weeklyCalendar, dayNames[index], eventName, eventTime);
             System.out.println("Done. " + eventName + " at " + eventTime +" on "+dayNames[index] + " is added on your calendar.");
 //---------------------------------------------------------------------------------------------------------------------
         } else if (input.equals("2")) {
-//                   weeklyCalendar.removeEvent();
-            System.out.println("Calling deleteEvent");
+            System.out.println("Great, you want to delete an event. What is the day for the event?\n" +
+                    "You can type Monday, Tuesday, etc.");
+            input = scanner.nextLine();
+            //day validation
+            int index = stringParser(input);
+            while (index < 0) {
+                System.out.println("I’m afraid I don’t have a day " + input + ". Try typing again the day.");
+                input = scanner.nextLine();
+                index = stringParser(input);
+            }
+            System.out.println("What is the event you want to delete on " + dayNames[index] + "?");
+            String eventName = scanner.nextLine();
+            //time validation
+            delEv(weeklyCalendar,eventName);
+            System.out.println("Done. " + eventName + " on "+dayNames[index] + " is deleted from your calendar.");
 //---------------------------------------------------------------------------------------------------------------------
         } else if (input.equals("3")) {
-//                   weeklyCalendar.moveEventDay();
-            System.out.println("Calling moveEventDay");
+            /*System.out.println("I see, you want to move an event to another day. What is the name of the event?");
+            input = scanner.nextLine();
+            //day validation
+            int index = stringParser(input);
+            while (index < 0) {
+                System.out.println("I’m afraid I don’t have a day " + input + ". Try typing again the day.");
+                input = scanner.nextLine();
+                index = stringParser(input);
+            }
+            System.out.println("What is the event you want to delete on " + dayNames[index] + "?");
+            String eventName = scanner.nextLine();
+            //time validation
+            deleteEvent(weeklyCalendar,eventName);
+            System.out.println("Done. " + eventName + " on "+dayNames[index] + " is deleted from your calendar.");*/
 //---------------------------------------------------------------------------------------------------------------------
         } else if (input.equals("4")) {
 //                   weeklyCalendar.moveEventTime();
