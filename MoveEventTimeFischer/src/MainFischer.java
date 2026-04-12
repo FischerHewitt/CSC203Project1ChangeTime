@@ -13,15 +13,6 @@ import java.util.ArrayList;
 
 static String[] dayNames = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-static int stringParser(String input) {//returns an index 0-6 of the day from the input string
-    for (int i = 0; i < dayNames.length; i++) {
-        if (input.equalsIgnoreCase(dayNames[i])) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 // Main function that assembles calendar and runs the test cases
 void main() {
     /*
@@ -146,6 +137,15 @@ public int findIndex (String day) {
     return idx;
 }
 
+static int stringParser(String input) {//returns an index 0-6 of the day from the input string
+    for (int i = 0; i < dayNames.length; i++) {
+        if (input.equalsIgnoreCase(dayNames[i])) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 //moves the inputted event if found to a new day
 void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, String documentationDay, String event) {
     int sDidx = findIndex(sourceDay.toLowerCase());
@@ -159,6 +159,52 @@ void moveEventDay (ArrayList<ArrayList<String>> calendar, String sourceDay, Stri
             calendar.get(sDidx).remove(i); //removes the event on the original day
             break; // ends the for loop
         }
+    }
+}
+
+static boolean isValidOption(String option) {
+
+    //checks if the day is valid
+    ArrayList<String> valid_option = new ArrayList<>(
+            Arrays.asList("1", "2", "3", "4", "5", "6", "7")
+    );
+
+
+    return valid_option.contains(option);
+}
+
+
+static boolean isValidDay(String day) {
+
+    ArrayList<String> valid_days = new ArrayList<>(
+            Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    );
+    return valid_days.contains(day);
+}
+
+//Isolates minutes, hours, and days in order to make sure the input is syntax is a proper time
+static void isValidTime(String time) {
+    if (!time.contains(":")) {
+        System.out.print("invalid syntax");
+    }
+    String[] parts = time.split(":");
+
+    int hours = Integer.parseInt(parts[0]);
+    int minutes = Integer.parseInt(parts[1]);
+
+    String hoursString = String.valueOf(hours);
+    String minutesString = String.valueOf(minutes);
+
+    if (hoursString.length() > 2) {
+        System.out.print("invalid hours");
+    }
+
+    if (minutesString.length() > 2) {
+        System.out.print("invalid minutes");
+    }
+
+    if (hours > 12 | minutes > 59) {
+        System.out.print("number out of range");
     }
 }
 
